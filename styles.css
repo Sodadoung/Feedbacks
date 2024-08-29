@@ -1,21 +1,11 @@
 body { 
     margin: 0;
     padding: 0;
-    /* background-image: url(bg.png);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover; */
     font-family: 'Roboto', sans-serif;
     width: 100%;
-    margin: 0;
-    padding: 0;
     list-style: none;
     box-sizing: border-box;
     font-family: "Battambang", system-ui;
-    /* background-image: url(bg.png);
-    background-position: right;
-    background-repeat: no-repeat;
-    background-size: cover; */
 }
 /* header    */
 @media screen and (max-width: 479px) {
@@ -39,7 +29,6 @@ body {
         font-size: 20px;
     }
     .container .menu-bar ul li a .cc{
-        
         display: none;
   }
 
@@ -67,9 +56,6 @@ body {
     width: 100%;
   }
   .text-contain .btn-contain{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     width: 75%;
 }
 .btn-contain .appstore{
@@ -79,13 +65,7 @@ body {
     width: 50%;
     height: 100%;
 }
-.btn-contain .playstore {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50%;
-    height: 100%;
-}
+
 }
   @media screen and (min-width: 480px) and (max-width: 767px) {
     .contain{
@@ -466,7 +446,7 @@ background: linear-gradient(90deg, rgb(130, 0, 159) 0%, rgb(154, 27, 125) 68%, r
 .btn-left .menu-slide .ul2 li a{
     font-size: 14px;
     font-weight: bold;
-    padding: 2px 20px;
+    padding: 2px 15px;
     border-radius: 5px;
     color: rgba(0, 0, 0, 0.743);
     text-decoration: none;
