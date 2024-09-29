@@ -3,206 +3,419 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
-    <title>Service Cards</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/brands.min.css" integrity="sha512-EJp8vMVhYl7tBFE2rgNGb//drnr1+6XKMvTyamMS34YwOEFohhWkGq13tPWnK0FbjSS6D8YoA3n3bZmb3KiUYA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Alpha02</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
     <style>
-      body{
-          background-image: url(back01.png);
-          background-color: rgb(115, 92, 50);
-          background-size: cover;
-          background-repeat: no-repeat;
-      }
-  </style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        .login-container {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column; /* Stack elements vertically */
+        }
+
+        .login-form, .department-form {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            margin-bottom: 20px; /* Spacing between forms */
+        }
+
+        .login-form h2, .department-form h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .profile-link {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: none; /* Initially hidden */
+        }
+
+        .form-control {
+            border-radius: 30px;
+            padding: 10px 20px;
+            margin-bottom: 20px; /* Added margin for spacing */
+        }
+
+        .btn-login {
+            background-color: #ff6600;
+            border-color: #ff6600;
+            border-radius: 30px;
+            width: 100%;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .btn-login:hover {
+            background-color: #e65c00;
+            border-color: #e65c00;
+        }
+
+        .text-center a {
+            color: #6c757d !important;
+            display: block;
+            margin-top: 15px;
+        }
+
+        .profile-image-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .profile-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .camera-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            padding: 5px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            cursor: pointer;
+        }
+
+        .profile-image-container:hover .camera-icon {
+            opacity: 1; /* Show camera icon on hover */
+        }
+
+        /* Styles for the button box */
+        .button-box {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px; /* Space between buttons */
+        }
+
+        .btn-box {
+            background-color: #007bff;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-sm navbar-dark " style="background-color: rgba(138, 93, 10, 0.726);;padding: 0;">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="javascript:void(0)" style="width: 150px;"><img src="logo.png" alt="logo" style="width: 100%;height: 100%;"></a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="mynavbar">
-            <ul class="navbar-nav me-auto">
-              <li class="nav-item bg-promary">
-                <a class="nav-link btn btn-primary"style="color:white;border-radius: 5px;background-color: #0D6EFD;"  href="javascript:void(0)" id="homeLink">Home</a>
-              </li>
-              <li class="nav-item "style="border-radius: 5px;">
-                <a class="nav-link "href="Tour.html" id="Tours_Khmer">Tours_Kh</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link"href="Advanture.html" id="Adventure">Adventure</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link"href="About.html" id="About Us">About Us</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link scroll-behavior: smooth;"href="contact.html" id="Contact Us">Contact Us</a>
-              </li>
-              
-              <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                   <!-- <img style="display: block;justify-content: center;align-items: center;height: 30px;" src="flag_kh.png" alt=""> -->
-                   Language
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="languageDropdown">
-                  <li><a class="dropdown-item" href="#" data-lang="en">English</a></li>
-                  <li><a class="dropdown-item" href="#" data-lang="km">ភាសាខ្មែរ(Khmer)</a></li>
-                </ul>
-              </div>
+
+<!-- Profile Link -->
+<div class="profile-link" id="profileLink">
+    <a href="#" id="profileBtn" class="btn btn-secondary" style="width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 18px; color: #fff; background-color: #ff6600; border: none; position: absolute; right: 20px; cursor: pointer;">👤</a>
+    <input type="file" id="imageUpload" accept="image/*" style="display:none">
+    <img id="profileImage" class="profile-image" src="" alt="Profile Image" style="display:none;">
+</div>
+<div class="login-container">
+    <!-- Department Selection Form -->
+    <div id="departmentForm" class="department-form">
+        <h2>Select Department</h2>
+        <select id="departmentSelect" class="form-control" onchange="showLoginForm()">
+            <option value="">Select Department</option>
+            <option value="GP Bank">GP</option>
+            <option value="ICG WORLD">ICG WORLD</option>
+            <option value="ICG CLUB">ICG CLUB</option>
+        </select>
+    </div>
+    <!-- Login Form -->
+    <div>
+        <form id="loginForm" class="login-form" style="display:none;">
+            <h2>Login to HR System</h2>
+            <div class="mb-3">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username" placeholder="Username" required>
             </div>
-            </ul>
-            <div class="ms-auto">
-            <form class="d-flex">
-              <input class="form-control me-2" type="text" placeholder="Search" id="searchInput">
-              <button class="btn btn-primary" type="button" id="searchButton">Search</button>
-            </form>
-          </div>
-        </div>
-      </nav><br><br><br>
-<!-- section1 -->
-<div class="container col" style="background-color: #d4d4d41e;border:  0px solid #d4d4d4;border-radius: 1px;padding: 3px;">
-    <div class="row">
-      <div class="col-sm-6"​>
-        <div class="txt d-flex-column align-items-center justify-content-center p-2 p-lg-0" style="background-color: rgba(135, 207, 235, 0.158);border:  1px solid #d4d4d4;height: 100%;border-radius: 3px;"><center>
-            <h1 class="mt-5 fw-bold" style="color: rgb(255, 255, 255);font-family: Oswald;">Tour_Khmer</h1>
-            <h4 style="padding: 15px;;color: rgb(75, 72, 72);font-family: Oswald;">Welcome to Tour_kh, your gateway to the enchanting land of Cambodia. Whether you're a history buff, a nature lover, or a culture enthusiast, our carefully curated tours promise an unforgettable experience.</h4>
-            <button  class="btn btn-primary btn-sm fs-6 text-uppercase d-none d-md-block" type="button" ><a href="Tour.html" style="text-decoration: none;color: white;width: 100%;height: 100%;display: flex;justify-content: center;align-items: center;">Let We Go</a></button>
-          </center>
-          <button  class="btn btn-primary btn-sm fs-6 text-uppercase d-block d-md-none" type="button" ><a href="Tour.html" style="text-decoration: none;color: white;width: 100%;height: 100%;display: flex;justify-content: center;align-items: center;">Let We Go</a></button>
-        </div>
-      </div>
-      <div class="col-sm-6 ">
-        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" style="box-shadow: 1px 1px 10px 3px #888888;">
-            <div class="carousel-indicators">
-              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            <div class="mb-3">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" placeholder="Email" required>
             </div>
-            <div class="carousel-inner" style="border-radius: 3px;">
-              <div class="carousel-item active">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/6/60/Angkor_Wat_Temple.jpg" class="d-block w-100" alt="...">
-              </div>
-              <div class="carousel-item">
-                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhMt11hNy9yeWlq4ST2QN89NzDBWaXWLehPP4ZELBJUr_2HqcSY_oo7w0Xt9a_STRL2iAkb1PVafYfEQf087nOalJ1FkW7STNNFV_LF5723N_BF7yfSw_xQ4LyDFdiEnrajnn-XC_z5TNDYYQIOZWZ5ZT42lfa-xci98-GBtb5IktyHALGocj4pfBP4hyphenhyphen0/s2048/434583062_904642138123869_281953733428079476_n.jpg " class="d-block w-100" alt="...">
-              </div>
-              <div class="carousel-item">
-                <img src=" https://scontent-bkk1-2.xx.fbcdn.net/v/t1.6435-9/49575841_744615669228981_5742956472636014592_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=13d280&_nc_ohc=rqPshm70QG8Q7kNvgFaWScR&_nc_ht=scontent-bkk1-2.xx&oh=00_AYB_4P79CoCS11LXG4hSJuXVF1KAH1yIxLtTfxLYf-F4qw&oe=6708CE7F" class="d-block w-100" alt="...">
-              </div>
-              <div class="carousel-item">
-                <img src="https://cambodiapropertyreport.com//storage/posts/January2022/FotoJet1.jpg" class="d-block w-100" alt="...">
-              </div>
-              <div class="carousel-item">
-                <img src="https://www.oknha.news/wp-content/uploads/2024/03/10-1.jpg " class="d-block w-100" alt="...">
-              </div>
-              <div class="carousel-item">
-                <img src=" https://scontent-bkk1-2.xx.fbcdn.net/v/t39.30808-6/453049134_944123717726948_5908092909840065343_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=833d8c&_nc_ohc=vnbaQHi0iVYQ7kNvgHUFvjT&_nc_ht=scontent-bkk1-2.xx&_nc_gid=A829SmrV5akXo3jrNrOUmAp&oh=00_AYCebt-ojRsYLx_jKb9dkLH0nGaBslmiX3zoeJNAom61rw&oe=66E723E4" class="d-block w-100" alt="...">
-              </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Next</span>
-            </button>
-          </div>
-      </div>
+            <div class="mb-3 position-relative">
+                <label for="password">Password : <span class="toggle-password" id="togglePassword">👁️</span></label>
+                <input type="password" class="form-control" id="password" placeholder="Password" required>
+            </div>
+            <button type="submit" class="btn btn-login">Login</button>
+            <div class="text-center">
+                <a href="#" id="forgotPasswordBtn">Forgot Password?</a>
+            </div>
+        </form>
     </div>
 
-    <!-- Section 2 -->
-    <div class="container col mt-5">
-      <div class="row">
-          <div class="col-sm-12">
-              <div class="text-center text-white">
-                  <h3 class="fw-bold"style="color: red;font-size: 20px;">Our Services</h3>
-                  <h4 class="p-3" style="color: rgb(75, 72, 72);;">We offer a wide range of tour packages to suit all budgets and preferences. Whether you're looking for a weekend getaway or a longer stay, we can provide you with the perfect experience.</h4>
-              </div>
-          </div>
-      </div>
-      <!-- Team Section -->
-      <div class="row mt-4">
-        <div class="col-lg-4 col-md-6 col-sm-12">
-          <div class="card mb-2">
-            <div class="card-body">
-            <div class="d-flex justify-content-center align-items-center">
-              <div class="ratio ratio-1x1 w-50 h-50 "><img  src="maker02.jpg"style="border-radius: 50%;" alt="Marketing" class="profile-pic"></div>
-            </div>
-              <div class="card-body text-center">
-                <h4>Mr.Sopheap</h4>
-                  <h6 class="card-title">Guide Supporter</h6>
-                  <p class="card-text">Creates strategies to promote the brand and its products.</p>
-              </div>
-            </div>
-          </div>
-      </div>
-          <div class="col-lg-4 col-md-6 col-sm-12">
-            <div class="card mb-2">
-              <div class="card-body">
-              <div class="d-flex justify-content-center align-items-center">
-                <div class="ratio ratio-1x1 w-50 h-50 "><img  src="maker02.jpg"style="border-radius: 50%;" alt="Marketing" class="profile-pic"></div>
-              </div>
+    <!-- Dashboard (Success Message) -->
+    <iframe id="contain" src="001.html" style="width: 100%; height: 100vh; display:none" frameborder="0"></iframe>
+</div>
 
-                <div class="card-body text-center">
-                  <h4>Mr.Sek</h4>
-                  <h6 class="card-title">Back End</h6>
-                    <p class="card-text">Creates strategies to promote the brand and its products.</p>
+<!-- Button Box -->
+<div class="button-box">
+<button class="btn-box"  style="color: #000000;border-radius: 50%; background-color: #e65c00;" id="messageBtn"><i class="fa-regular fa-message"></i></button>
+</div>
+
+<!-- Modal for Profile Update -->
+<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="profileModalLabel">User Profile</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mb-3 profile-image-container">
+                    <img id="modalProfileImage" class="profile-image mb-3" src="" alt="Profile Image" style="display:block;">
+                    <input type="file" id="modalImageUpload" accept="image/*" style="display:none;">
+                    <span id="cameraBtn" class="material-icons camera-icon">camera_alt</span>
                 </div>
-              </div>
+                <div class="mb-3">
+                    <strong>Username:</strong> <span id="usernameDisplay">User123</span>
+                </div>
+                <div class="mb-3">
+                    <strong>Position:</strong> <span id="positionDisplay">Software Engineer</span>
+                </div>
+                <div class="mb-3">
+                    <strong>Email:</strong> <span id="emailDisplay">user@example.com</span>
+                </div>
+                <button id="logOutBtn" class="btn btn-danger">Log Out</button>
             </div>
         </div>
-          <div class="col-lg-4 col-md-6 col-sm-12 ">
-              <div class="card mb-2">
-                <div class="card-body">
-                  <div class="d-flex justify-content-center align-items-center">
-                    <div class="ratio ratio-1x1 w-50 h-50 "><img src="001.jpg"style="border-radius: 50%;" alt="Marketing" class="profile-pic"></div>
-                  </div>
-                    <div class="card-body text-center">
-                      <h4>Mr.Thy</h4>
-                      <h6 class="card-title">Front End</h6>
-                        <p class="card-text">Creates strategies to promote the brand and its products.</p>
+    </div>
+</div>
+
+<!-- Modal for Reset Password -->
+<div class="modal fade" id="resetPasswordModal" tabindex="-1" aria-labelledby="resetPasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="resetPasswordModalLabel">Reset Password</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="resetPasswordForm">
+                    <div class="mb-3">
+                        <label for="resetEmail">Email</label>
+                        <input type="email" class="form-control" id="resetEmail" placeholder="Enter your email" required>
                     </div>
-                </div>
-              </div>
-          </div>
-      </div>
-  </div>
-<!-- Footer -->
-<footer class="container bg-dark text-white text-center mt-5 py-3" style="padding: 0;">
-    <div class="container">
-        <p class="mb-0">© 2023 Alpha01.Com.</p>
-        <ul class="list-inline mt-2">
-            <li class="list-inline-item">
-                <a href="#" class="text-white">Privacy Policy</a>
-            </li>
-            <li class="list-inline-item">
-                <a href="#" class="text-white">Terms of Service</a>
-            </li>
-            <li class="list-inline-item">
-                <a href="#" class="text-white">Contact Us</a>
-            </li>
-        </ul>
+                    <div class="mb-3">
+                        <label for="captcha">CAPTCHA</label>
+                        <input type="text" class="form-control" id="captcha" placeholder="Enter CAPTCHA" required>
+                    </div>
+                    <p>CAPTCHA: 1234</p>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="resetPasswordForm" class="btn btn-primary">Request Reset</button>
+            </div>
+        </div>
     </div>
-</footer>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</div>
+<!-- Modal for Message -->
+<div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="overflow: hidden;padding: 5px;display: flex;justify-content: center;align-items: center;">
+            <iframe src="MessageBox2.html" frameborder="0" style="width: 480px;height: 300px;"></iframe>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    document.getElementById('searchButton').addEventListener('click', function() {
-    const searchQuery = document.getElementById('searchInput').value.toLowerCase();
-    const cards = document.querySelectorAll('.col');
+    // Check login status on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        const username = localStorage.getItem('username');
+        const email = localStorage.getItem('email');
+        if (username && email) {
+            // User is logged in, show the dashboard and hide other forms
+            document.getElementById('profileLink').style.display = 'block';
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('contain').style.display = 'block'; // Show dashboard
+            document.getElementById('departmentForm').style.display = 'none'; // Hide department form
+        }
+        // Password toggle functionality
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordField = document.getElementById('password');
+            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordField.setAttribute('type', type);
+            this.textContent = type === 'password' ? '👁️' : '🙈';
+        });
+    });
+    // Profile button click event
+    document.getElementById('profileBtn').addEventListener('click', function(e) {
+        e.preventDefault();
+        // Retrieve user info from local storage
+        const username = localStorage.getItem('username');
+        const position = localStorage.getItem('position');
+        const email = localStorage.getItem('email');
+        const profilePic = localStorage.getItem('profilePic');
 
-    cards.forEach(card => {
-        const cardTitle = card.querySelector('.card-title').innerText.toLowerCase();
-        const cardText = card.querySelector('.card-text').innerText.toLowerCase();
+        // Set user information in the modal
+        document.getElementById('usernameDisplay').textContent = username || 'User123';
+        document.getElementById('positionDisplay').textContent = position || 'Software Engineer';
+        document.getElementById('emailDisplay').textContent = email || 'user@example.com';
+        document.getElementById('modalProfileImage').src = profilePic || ''; // Set profile image src
 
-        if (cardTitle.includes(searchQuery) || cardText.includes(searchQuery)) {
-            card.style.display = 'block';
-        } else {
-            card.style.display = 'none';
+        const profileModal = new bootstrap.Modal(document.getElementById('profileModal'));
+        profileModal.show();
+    });
+
+    document.getElementById('cameraBtn').addEventListener('click', function() {
+        document.getElementById('modalImageUpload').click(); // Trigger file input click
+    });
+
+    document.getElementById('modalImageUpload').addEventListener('change', function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('modalProfileImage').src = e.target.result;
+                // Store profile image in local storage
+                localStorage.setItem('profilePic', e.target.result);
+            }
+            reader.readAsDataURL(file);
         }
     });
-});
+
+    document.getElementById('logOutBtn').addEventListener('click', function() {
+        // Clear only user authentication data on logout
+        localStorage.removeItem('username');
+        localStorage.removeItem('email');
+        localStorage.removeItem('position');
+
+        alert('You have been logged out.');
+
+        // Reset the UI to show the department selection form
+        document.getElementById('profileLink').style.display = 'none';
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('contain').style.display = 'none'; // Hide the dashboard
+        document.getElementById('departmentForm').style.display = 'block'; // Show department selection again
+    });
+
+    function showLoginForm() {
+        const departmentSelect = document.getElementById('departmentSelect');
+        const loginForm = document.getElementById('loginForm');
+        const departmentForm = document.getElementById('departmentForm');
+
+        if (departmentSelect.value) {
+            departmentForm.style.display = 'none'; // Hide the department selection
+            loginForm.style.display = 'block'; // Show the login form
+        }
+    }
+
+    // Sample users array
+    const users = [
+        { username: 'user1', email: 'user1@example.com', password: 'password1' },
+        { username: 'user2', email: 'user2@example.com', password: 'password2' },
+        { username: 'user3', email: 'user3@example.com', password: 'password3' },
+        { username: '1', email: '1@1', password: '1' }
+    ];
+
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const username = document.getElementById('username').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const loginButton = e.target.querySelector('.btn-login');
+
+        loginButton.innerHTML = 'Logging in... <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+        loginButton.disabled = true;
+        
+        setTimeout(() => {
+            loginButton.innerHTML = 'Login';
+            loginButton.disabled = false;
+
+            // Validity check against the users array
+            const user = users.find(u => u.username === username && u.email === email && u.password === password);
+            if (user) {
+                // Store user info in local storage
+                localStorage.setItem('username', user.username);
+                localStorage.setItem('email', user.email);
+                localStorage.setItem('position', 'Software Engineer'); // Placeholder for position
+
+                // Hide the login form and show dashboard
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('profileLink').style.display = 'block';
+                document.getElementById('contain').style.display = 'block'; // Show dashboard
+                document.getElementById('departmentForm').style.display = 'none'; // Hide department form
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Login Failed',
+                    text: 'Wrong username, email, or password!',
+                });
+            }
+        }, 2000);
+    });
+
+    document.getElementById('forgotPasswordBtn').addEventListener('click', function(e) {
+        e.preventDefault();
+        const resetPasswordModal = new bootstrap.Modal(document.getElementById('resetPasswordModal'));
+        resetPasswordModal.show();
+    });
+
+    document.getElementById('resetPasswordForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const resetEmail = document.getElementById('resetEmail').value;
+        const captcha = document.getElementById('captcha').value;
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'Password reset link sent!'
+        });
+        const resetPasswordModal = bootstrap.Modal.getInstance(document.getElementById('resetPasswordModal'));
+        resetPasswordModal.hide();
+    });
+
+    // Message button click event
+    document.getElementById('messageBtn').addEventListener('click', function(e) {
+        e.preventDefault();
+        const messageModal = new bootstrap.Modal(document.getElementById('messageModal'));
+        messageModal.show();
+    });
+
 </script>
 </body>
+<script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    // Assume login validation is happening here...
+
+    const userDataString = localStorage.getItem('loggedInUser');
+
+    // If user logged in successfully
+    if (userDataString) {
+        const loggedInUser = JSON.parse(userDataString);
+        document.getElementById('username').value = loggedInUser.name;  // Prefill or use as needed
+        document.getElementById('email').value = loggedInUser.email;    // Prefill or use as needed
+    }
+
+    alert(`Welcome back, ${loggedInUser.name}!`);
+    // Redirect or perform further login actions
+});
+
+</script>
 </html>

@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        .contain {
+            margin-top: 30px;
+        }
+
+        h2 {
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .table {
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th,
+        td {
+            text-align: center;
+        }
+
+        .modal-content {
+            border-radius: 10px;
+        }
+
+        /* Loading spinner styling */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Welcome to HR SYSTEM</h2>
+    <h3>Administrator Dashboard</h3>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <div class="contain" style="padding: 10px;">
+        <!-- Custom Search Input -->
+        <div class="mb-3 d-flex justify-content-between align-items-center">
+            <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addModal">Add User</button>
+            <div>
+                <input type="text" id="customSearchInput" placeholder="Search..." class="form-control d-inline"
+                    style="width: auto; display: inline-block;">
+                <button id="searchButton" class="btn btn-primary">Search</button>
+                <button id="refreshButton" class="btn btn-secondary">Refresh</button> <!-- Changed button label -->
+            </div>
+        </div>
+        <table id="customerTable" class="table table-striped table-hover display">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Role</th>
+                    <th>Position</th>
+                    <th>Password</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Existing rows will be populated here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modals for View, Edit, and Add -->
+    <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewModalLabel">Customer Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Name:</strong> <span id="modalName"></span></p>
+                    <p><strong>Date:</strong> <span id="modalDate"></span></p>
+                    <p><strong>Status:</strong> <span id="modalStatus"></span></p>
+                    <p><strong>Email:</strong> <span id="modalEmail"></span></p>
+                    <p><strong>Phone:</strong> <span id="modalPhone"></span></p>
+                    <p><strong>Role:</strong> <span id="modalRole"></span></p>
+                    <p><strong>Position:</strong> <span id="modalPosition"></span></p>
+                    <p><strong>Password:</strong> <span id="modalPassword"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Customer Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm" autocomplete="off">
+                        <div class="mb-3">
+                            <label for="editName" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="editName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editDate" class="form-label">Date</label>
+                            <input type="date" class="form-control" id="editDate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editStatus" class="form-label">Status</label>
+                            <select class="form-select" id="editStatus">
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="editEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editPhone" class="form-label">Phone</label>
+                            <input type="text" class="form-control" id="editPhone" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editRole" class="form-label">Role</label>
+                            <input type="text" class="form-control" id="editRole" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editPosition" class="form-label">Position</label>
+                            <input type="text" class="form-control" id="editPosition" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="editPassword" required>
+                        </div>
+                        <input type="hidden" id="editRowId">
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add User Modal -->
+    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addModalLabel">Add User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addForm" autocomplete="off">
+                        <div class="mb-3">
+                            <label for="addName" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="addName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="addDate" class="form-label">Date</label>
+                            <input type="date" class="form-control" id="addDate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="addStatus" class="form-label">Status</label>
+                            <select class="form-select" id="addStatus" required>
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="addEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="addEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="addPhone" class="form-label">Phone</label>
+                            <input type="text" class="form-control" id="addPhone" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="addRole" class="form-label">Role</label>
+                            <input type="text" class="form-control" id="addRole" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="addPosition" class="form-label">Position</label>
+                            <input type="text" class="form-control" id="addPosition" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="addPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="addPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-success">Add User</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            const dataTable = $('#customerTable').DataTable({
+                searching: false // Disable the default search box
+            });
+
+            loadCustomers();
+
+            // Custom search function
+            $('#searchButton').on('click', function () {
+                const searchTerm = $('#customSearchInput').val().toLowerCase();
+                if (searchTerm === "") {
+                    // If the search term is empty, show all rows
+                    dataTable.search('').draw();
+                } else {
+                    // Filter the rows based on the input
+                    dataTable.search(searchTerm).draw();
+                }
+            });
+
+            // Refresh button functionality
+            $('#refreshButton').on('click', function () {
+                location.reload(); // Reload the page
+            });
+
+            // Delete button click
+            $(document).on('click', '.delete-btn', function () {
+                const row = $(this).closest('tr');
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        row.remove(); // Remove the row from the table
+                        saveCustomers(); // Update local storage
+                        Swal.fire(
+                            'Deleted!',
+                            'The customer has been deleted.',
+                            'success'
+                        );
+                    }
+                });
+            });
+
+            // View button click
+            $(document).on('click', '.view-btn', function () {
+                const row = $(this).closest('tr');
+                $('#modalName').text(row.find('td').eq(1).text());
+                $('#modalDate').text(row.find('td').eq(2).text());
+                $('#modalStatus').text(row.find('td').eq(3).text());
+                $('#modalEmail').text(row.find('td').eq(4).text());
+                $('#modalPhone').text(row.find('td').eq(5).text());
+                $('#modalRole').text(row.find('td').eq(6).text());
+                $('#modalPosition').text(row.find('td').eq(7).text());
+                $('#modalPassword').text(row.find('td').eq(8).text());
+                $('#viewModal').modal('show');
+            });
+
+            // Edit button click
+            $(document).on('click', '.edit-btn', function () {
+                const row = $(this).closest('tr');
+                $('#editName').val(row.find('td').eq(1).text());
+                $('#editDate').val(row.find('td').eq(2).text());
+                $('#editStatus').val(row.find('td').eq(3).text());
+                $('#editEmail').val(row.find('td').eq(4).text());
+                $('#editPhone').val(row.find('td').eq(5).text());
+                $('#editRole').val(row.find('td').eq(6).text());
+                $('#editPosition').val(row.find('td').eq(7).text());
+                $('#editPassword').val(row.find('td').eq(8).text());
+                $('#editRowId').val(row.index());
+                $('#editModal').modal('show');
+            });
+
+            // Handle form submission for editing
+            $('#editForm').on('submit', function (e) {
+                e.preventDefault();
+                const rowId = $('#editRowId').val();
+                const row = $('#customerTable tbody tr').eq(rowId);
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You want to save changes?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, save it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Update the row with new values
+                        row.find('td').eq(1).text($('#editName').val());
+                        row.find('td').eq(2).text($('#editDate').val());
+                        row.find('td').eq(3).text($('#editStatus').val());
+                        row.find('td').eq(4).text($('#editEmail').val());
+                        row.find('td').eq(5).text($('#editPhone').val());
+                        row.find('td').eq(6).text($('#editRole').val());
+                        row.find('td').eq(7).text($('#editPosition').val());
+                        row.find('td').eq(8).text($('#editPassword').val());
+
+                        saveCustomers();
+                        $('#editModal').modal('hide');
+                        Swal.fire(
+                            'Saved!',
+                            'Your changes have been saved.',
+                            'success'
+                        );
+                    }
+                });
+            });
+
+            // Handle form submission for adding users
+            $('#addForm').on('submit', function (e) {
+                e.preventDefault();
+                addUser();
+            });
+        });
+
+        function addUser() {
+            $('#loadingOverlay').show(); // Show loading overlay
+
+            const name = $('#addName').val();
+            const date = $('#addDate').val();
+            const status = $('#addStatus').val();
+            const email = $('#addEmail').val();
+            const phone = $('#addPhone').val();
+            const role = $('#addRole').val();
+            const position = $('#addPosition').val();
+            const password = $('#addPassword').val();
+
+            // Basic validation
+            if (!name || !date || !email || !phone || !role || !position || !password) {
+                Swal.fire('Error!', 'Please fill out all fields.', 'error');
+                $('#loadingOverlay').hide(); // Hide loading overlay
+                return;
+            }
+
+            const newCustomerIndex = $('#customerTable tbody tr').length + 1;
+            const newCustomer = `
+            <tr>
+                <td>${newCustomerIndex}</td>
+                <td>${name}</td>
+                <td>${date}</td>
+                <td>${status}</td>
+                <td>${email}</td>
+                <td>${phone}</td>
+                <td>${role}</td>
+                <td>${position}</td>
+                <td>${password}</td>
+                <td>
+                    <button class="btn btn-info view-btn"><i class="fas fa-eye"></i></button>
+                    <button class="btn btn-warning edit-btn"><i class="fas fa-edit"></i></button>
+                    <button class="btn btn-danger delete-btn"><i class="fas fa-trash-alt"></i></button>
+                </td>
+            </tr>
+        `;
+
+            Swal.fire({
+                title: 'Confirm Action',
+                text: "Do you want to add this customer?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, add it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#customerTable tbody').append(newCustomer);
+                    saveCustomers();
+                    $('#addModal').modal('hide');
+                    $('#addForm')[0].reset();
+                    Swal.fire(
+                        'Added!',
+                        'The customer has been added.',
+                        'success'
+                    );
+                }
+                $('#loadingOverlay').hide(); // Hide loading overlay after processing
+            });
+        }
+
+        function saveCustomers() {
+            const customers = [];
+            $('#customerTable tbody tr').each(function () {
+                const row = $(this);
+                const customer = {
+                    id: row.find('td').eq(0).text(),
+                    name: row.find('td').eq(1).text(),
+                    date: row.find('td').eq(2).text(),
+                    status: row.find('td').eq(3).text(),
+                    email: row.find('td').eq(4).text(),
+                    phone: row.find('td').eq(5).text(),
+                    role: row.find('td').eq(6).text(),
+                    position: row.find('td').eq(7).text(),
+                    password: row.find('td').eq(8).text()
+                };
+                customers.push(customer);
+            });
+            localStorage.setItem('customers', JSON.stringify(customers));
+        }
+
+        function loadCustomers() {
+            const customers = JSON.parse(localStorage.getItem('customers')) || [];
+            $('#customerTable tbody').empty();
+            customers.forEach((customer, index) => {
+                $('#customerTable tbody').append(
+                    `<tr>
+                    <td>${index + 1}</td>
+                    <td>${customer.name}</td>
+                    <td>${customer.date}</td>
+                    <td>${customer.status}</td>
+                    <td>${customer.email}</td>
+                    <td>${customer.phone}</td>
+                    <td>${customer.role}</td>
+                    <td>${customer.position}</td>
+                    <td>${customer.password}</td>
+                    <td>
+                        <button class="btn btn-info view-btn"><i class="fas fa-eye"></i></button>
+                        <button class="btn btn-warning edit-btn"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-danger delete-btn"><i class="fas fa-trash-alt"></i></button>
+                    </td>
+                </tr>`
+                );
+            });
+        }
+    </script>
+
+</body>
+</html>
